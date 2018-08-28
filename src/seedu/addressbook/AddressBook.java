@@ -1,5 +1,4 @@
 package seedu.addressbook;
-
 /*
  * NOTE : =============================================================
  * This class is written in a procedural fashion (i.e. not Object-Oriented)
@@ -209,12 +208,12 @@ public class AddressBook {
     public static void main(String[] args) {
         showWelcomeMessage();
         processProgramArgs(args);
-        loadDataFromStorage();
+        loadDataFromStorage();// initialize the in-memory data from the local file, i.e. the global variable storageFilePath
         while (true) {
-            String userCommand = getUserInput();
-            echoUserCommand(userCommand);
+            String userCommand = getUserInput();// return full line as a String from the user
+            echoUserCommand(userCommand);//Echoes the user input back to the user.
             String feedback = executeCommand(userCommand);
-            showResultToUser(feedback);
+            showResultToUser(feedback); // prints the result to the user
         }
     }
 
@@ -365,7 +364,7 @@ public class AddressBook {
      * @return  feedback about how the command was executed
      */
     private static String executeCommand(String userInputString) {
-        final String[] commandTypeAndParams = splitCommandWordAndArgs(userInputString);
+        final String[] commandTypeAndParams = splitCommandWordAndArgs(userInputString); //size 2 array; first element is the command type and second element is the arguments string
         final String commandType = commandTypeAndParams[0];
         final String commandArgs = commandTypeAndParams[1];
         switch (commandType) {
@@ -444,16 +443,16 @@ public class AddressBook {
 
     /**
      * Finds and lists all persons in address book whose name contains any of the argument keywords.
-     * Keyword matching is case sensitive.
+     * Keyword matching is case insensitive.
      *
      * @param commandArgs full command args string from the user
      * @return feedback display message for the operation result
      */
     private static String executeFindPersons(String commandArgs) {
-        final Set<String> keywords = extractKeywordsFromFindPersonArgs(commandArgs);
+        final Set<String> keywords = extractKeywordsFromFindPersonArgs(commandArgs);// set of keywords that was separated by white space
         final ArrayList<String[]> personsFound = getPersonsWithNameContainingAnyKeyword(keywords);
-        showToUser(personsFound);
-        return getMessageForPersonsDisplayedSummary(personsFound);
+        showToUser(personsFound);// print out the persons found
+        return getMessageForPersonsDisplayedSummary(personsFound);// sdisplay the feedback message. i.e. 1 persons found! 
     }
 
     /**
@@ -473,7 +472,9 @@ public class AddressBook {
      * @return set of keywords as specified by args
      */
     private static Set<String> extractKeywordsFromFindPersonArgs(String findPersonCommandArgs) {
-        return new HashSet<>(splitByWhitespace(findPersonCommandArgs.trim()));
+        /*Splits the find person args into list of substrings that were separated by whitespace.
+		jshell> extractKeywordsFromFindPersonArgs("find jiang")$7 ==> [find, jiang]*/
+        return new HashSet<>(splitByWhitespace(findPersonCommandArgs.trim())); // trim: Returns a copy of the string, with leading and trailing whitespace omitted.
     }
 
     /**
@@ -485,12 +486,30 @@ public class AddressBook {
     private static ArrayList<String[]> getPersonsWithNameContainingAnyKeyword(Collection<String> keywords) {
         final ArrayList<String[]> matchedPersons = new ArrayList<>();
         for (String[] person : getAllPersonsInAddressBook()) {
-            final Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));
+            Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));// set of strings with components of a person's name.(different components are separated by white space)
+            /* convert both Strings in both sets to upper case */
+           	wordsInName = convertElementsToUpperCase(wordsInName);
+           	keywords = convertElementsToUpperCase(keywords);
+            // note that keywords is a set of user commands
             if (!Collections.disjoint(wordsInName, keywords)) {
+            	// disjoint(): Returns true if the two specified collections have no elements in common.
                 matchedPersons.add(person);
             }
         }
         return matchedPersons;
+    }
+
+    /**
+     * 
+     * @param collection containing string elements
+     * @return a set containing all elements with upper case
+     */
+    private static Set<String> convertElementsToUpperCase(Collection<String> collection) {
+    	Set<String> output = new HashSet<>();
+		for (String s : collection) {
+			output.add(s.toUpperCase());
+		} 
+		return output;
     }
 
     /**
@@ -1161,7 +1180,7 @@ public class AddressBook {
      * @return split by whitespace
      */
     private static ArrayList<String> splitByWhitespace(String toSplit) {
-        return new ArrayList<>(Arrays.asList(toSplit.trim().split("\\s+")));
+        return new ArrayList<>(Arrays.asList(toSplit.trim().split("\\s+"))); // split: splits the string by a given character into a String arr. i.e. "a-b".split("-") returns array containing "a" and "b"
     }
 
 }
