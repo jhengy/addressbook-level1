@@ -478,7 +478,8 @@ public class AddressBook {
     }
 
     /**
-     * Retrieves all persons in the full model whose names contain some of the specified keywords.
+     * Retrieves all persons in the full model whose names contain some of the specified keywords, the
+     * search is case insensitive.
      *
      * @param keywords for searching
      * @return list of persons in full model with name containing some of the keywords
