@@ -64,7 +64,7 @@ public class AddressBook {
      * at which java String.format(...) method can insert values.
      * =========================================================================
      */
-    private static final String MESSAGE_ADDED = "New person added: %1$s, Phone: %2$s, Email: %3$s";
+    private static final String MESSAGE_ADDED = "New person added: %1$s, Phone: %2$s, Email: %3$s"; // this is the format of the output string, with 3 palceholders--> String.format(MESSAGE_ADDED, "1","0212","jgah@gmail.com")...
     private static final String MESSAGE_ADDRESSBOOK_CLEARED = "Address book has been cleared!";
     private static final String MESSAGE_COMMAND_HELP = "%1$s: %2$s";
     private static final String MESSAGE_COMMAND_HELP_PARAMETERS = "\tParameters: %1$s";
@@ -507,7 +507,7 @@ public class AddressBook {
      * @param collection containing string elements
      * @return a set containing all elements with upper case
      */
-    private static Set<String> convertElementsToUpperCase(Collection<String> collection) {
+    private static Set<String> convertElementsToCapitalLetters(Collection<String> collection) {
     	Set<String> output = new HashSet<>();
 		for (String s : collection) {
 			output.add(s.toUpperCase());
