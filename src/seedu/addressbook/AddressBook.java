@@ -491,8 +491,8 @@ public class AddressBook {
         for (String[] person : getAllPersonsInAddressBook()) {
             Set<String> wordsInName = new HashSet<>(splitByWhitespace(getNameFromPerson(person)));// set of strings with components of a person's name.(different components are separated by white space)
             /* convert both Strings in both sets to upper case */
-           	wordsInName = convertElementsToUpperCase(wordsInName);
-           	keywords = convertElementsToUpperCase(keywords);
+           	wordsInName = convertElementsToCapitalLetters(wordsInName);
+           	keywords = convertElementsToCapitalLetters(keywords);
             // note that keywords is a set of user commands
             if (!Collections.disjoint(wordsInName, keywords)) {
             	// disjoint(): Returns true if the two specified collections have no elements in common.
@@ -623,11 +623,17 @@ public class AddressBook {
     private static String getUserInput() {
         System.out.print(LINE_PREFIX + "Enter command: ");
         String inputLine = SCANNER.nextLine();
-        // silently consume all blank and comment lines
-        while (inputLine.trim().isEmpty() || inputLine.trim().charAt(0) == INPUT_COMMENT_MARKER) {
+       	consumeBlankAndCommentLines(inputLine);
+        return inputLine;
+    }
+
+    /** find the next line input by the user by consuming any blank line or comment lines
+     * @param inputLine currentLine scanned
+     */
+    private static void consumeBlankAndCommentLines(String inputLine) {
+		while (inputLine.trim().isEmpty() || inputLine.trim().charAt(0) == INPUT_COMMENT_MARKER) {
             inputLine = SCANNER.nextLine();
         }
-        return inputLine;
     }
 
    /*
